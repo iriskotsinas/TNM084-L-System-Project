@@ -1,4 +1,4 @@
-import {vec4, mat4} from 'gl-matrix';
+import {vec3, vec4, mat4, mat3} from 'gl-matrix';
 import Drawable from './Drawable';
 import {gl} from '../../globals';
 
@@ -24,6 +24,7 @@ class ShaderProgram {
   attrPos: number;
   attrNor: number;
   attrCol: number;
+  attrSpos : number;
 
   attrTranslation: number;
   attrQuaternion: number;
@@ -32,7 +33,14 @@ class ShaderProgram {
   unifModel: WebGLUniformLocation;
   unifModelInvTr: WebGLUniformLocation;
   unifViewProj: WebGLUniformLocation;
+  unifInvViewProj: WebGLUniformLocation;
   unifColor: WebGLUniformLocation;
+  unifTime: WebGLUniformLocation;
+  unifCameraAxes: WebGLUniformLocation;
+  unifRef: WebGLUniformLocation;
+  unifEye: WebGLUniformLocation;
+  unifUp: WebGLUniformLocation;
+  unifDimensions: WebGLUniformLocation;
 
   unifIsInstance: WebGLUniformLocation;
 
@@ -50,6 +58,7 @@ class ShaderProgram {
     this.attrPos = gl.getAttribLocation(this.prog, "vs_Pos");
     this.attrNor = gl.getAttribLocation(this.prog, "vs_Nor");
     this.attrCol = gl.getAttribLocation(this.prog, "vs_Col");
+    this.attrSpos = gl.getAttribLocation(this.prog,"vs_Spos");
 
     this.attrTranslation = gl.getAttribLocation(this.prog, "vs_Translation");
     this.attrQuaternion = gl.getAttribLocation(this.prog, "vs_Quaternion");
@@ -58,7 +67,14 @@ class ShaderProgram {
     this.unifModel      = gl.getUniformLocation(this.prog, "u_Model");
     this.unifModelInvTr = gl.getUniformLocation(this.prog, "u_ModelInvTr");
     this.unifViewProj   = gl.getUniformLocation(this.prog, "u_ViewProj");
+    this.unifInvViewProj = gl.getUniformLocation(this.prog, "u_InvViewProj");
     this.unifColor      = gl.getUniformLocation(this.prog, "u_Color");
+    this.unifTime      = gl.getUniformLocation(this.prog, "u_Time");
+    this.unifCameraAxes      = gl.getUniformLocation(this.prog, "u_CameraAxes");
+    this.unifEye   = gl.getUniformLocation(this.prog, "u_Eye");
+    this.unifRef   = gl.getUniformLocation(this.prog, "u_Ref");
+    this.unifUp   = gl.getUniformLocation(this.prog, "u_Up");
+    this.unifDimensions = gl.getUniformLocation(this.prog,"u_Dimensions");
 
     this.unifIsInstance = gl.getUniformLocation(this.prog, "u_IsInstance");
   }
@@ -109,6 +125,47 @@ class ShaderProgram {
     }
   }
 
+  setCameraAxes(axes: mat3) {
+    this.use();
+    if (this.unifCameraAxes !== -1) {
+      gl.uniformMatrix3fv(this.unifCameraAxes, false, axes);
+    }
+  }
+
+  setEyeRefUp(eye: vec3, ref: vec3, up: vec3) {
+    this.use();
+    if(this.unifEye !== -1) {
+      gl.uniform3f(this.unifEye, eye[0], eye[1], eye[2]);
+    }
+    if(this.unifRef !== -1) {
+      gl.uniform3f(this.unifRef, ref[0], ref[1], ref[2]);
+    }
+    if(this.unifUp !== -1) {
+      gl.uniform3f(this.unifUp, up[0], up[1], up[2]);
+    }
+  }
+
+  setDimensions(width: number, height: number) {
+    this.use();
+    if(this.unifDimensions !== -1) {
+      gl.uniform2f(this.unifDimensions, width, height);
+    }
+  }
+
+  setTime(t: number) {
+    this.use();
+    if (this.unifTime !== -1) {
+      gl.uniform1f(this.unifTime, t);
+    }
+  }
+
+  setInvViewProjMatrix(ivp: mat4) {
+    this.use();
+    if (this.unifInvViewProj !== -1) {
+      gl.uniformMatrix4fv(this.unifInvViewProj, false, ivp);
+    }
+  }
+
   draw(d: Drawable) {
     this.use();
 
@@ -131,7 +188,7 @@ class ShaderProgram {
 
     }
 
-    if(d.isInstanced) {
+    if (d.isInstanced) {
       if (this.attrTranslation != -1 && d.bindTranslations()) {
         gl.enableVertexAttribArray(this.attrTranslation);
         gl.vertexAttribPointer(this.attrTranslation, 4, gl.FLOAT, false, 16, 0);
@@ -150,6 +207,12 @@ class ShaderProgram {
         gl.vertexAttribDivisor(this.attrScale, 1);
       }
 
+      if (this.attrSpos != -1 && d.bindSpos()) {
+        gl.enableVertexAttribArray(this.attrSpos);
+        gl.vertexAttribPointer(this.attrSpos,3,gl.FLOAT,false,0,0);
+        gl.vertexAttribDivisor(this.attrSpos,1);
+      }
+
       d.bindIdx();
       gl.drawElementsInstanced(d.drawMode(), d.elemCount(), gl.UNSIGNED_INT, 0, d.instances);
     } else {
@@ -160,6 +223,7 @@ class ShaderProgram {
     if (this.attrPos != -1) gl.disableVertexAttribArray(this.attrPos);
     if (this.attrNor != -1) gl.disableVertexAttribArray(this.attrNor);
     if (this.attrCol != -1) gl.disableVertexAttribArray(this.attrCol);
+    if (this.attrSpos!= -1) gl.disableVertexAttribArray(this.attrSpos);
 
     if (this.attrTranslation != -1) gl.disableVertexAttribArray(this.attrTranslation);
     if (this.attrQuaternion != -1) gl.disableVertexAttribArray(this.attrQuaternion);

@@ -10,17 +10,16 @@ class Square extends Drawable {
   center: vec4;
 
   constructor(center: vec3) {
-    super(); // Call the constructor of the super class. This is required.
+    super();
     this.center = vec4.fromValues(center[0], center[1], center[2], 1);
   }
 
   create() {
-
-    let topLeft: vec3     = vec3.fromValues(196, 77, 255);
+    let topLeft: vec3 = vec3.fromValues(196, 77, 255);
     vec3.scale(topLeft, topLeft, 1/255.0);
-    let topRight: vec3    = vec3.fromValues(196, 77, 255);
+    let topRight: vec3 = vec3.fromValues(196, 77, 255);
     vec3.scale(topRight, topRight, 1/255.0);
-    let bottomLeft: vec3  = vec3.fromValues(255, 117, 26);
+    let bottomLeft: vec3 = vec3.fromValues(255, 117, 26);
     vec3.scale(bottomLeft, bottomLeft, 1/255.0);
     let bottomRight: vec3 = vec3.fromValues(255, 117, 26);
     vec3.scale(bottomRight, bottomRight, 1/255.0);

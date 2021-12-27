@@ -11,6 +11,7 @@ abstract class Drawable {
   bufTranslations: WebGLBuffer;
   bufQuaternions: WebGLBuffer;
   bufScales: WebGLBuffer;
+  bufSPos:WebGLBuffer;
 
   idxBound: boolean = false;
   posBound: boolean = false;
@@ -20,6 +21,7 @@ abstract class Drawable {
   translationsBound: boolean = false;
   quaternionsBound: boolean = false;
   scalesBound: boolean = false;
+  SposGenerated:boolean = false;
 
   isInstanced: boolean = false;
   instances: number = 0;
@@ -34,6 +36,7 @@ abstract class Drawable {
     gl.deleteBuffer(this.bufTranslations);
     gl.deleteBuffer(this.bufQuaternions);
     gl.deleteBuffer(this.bufScales);
+    gl.deleteBuffer(this.bufSPos);
   }
 
   generateIdx() {
@@ -69,6 +72,11 @@ abstract class Drawable {
   generateTranslations() {
     this.translationsBound = true;
     this.bufTranslations = gl.createBuffer();
+  }
+
+  generateSpos(){
+    this.SposGenerated = true;
+    this.bufSPos = gl.createBuffer();
   }
 
   bindIdx(): boolean {
@@ -123,12 +131,23 @@ abstract class Drawable {
     return this.scalesBound;
   }
 
+  bindSpos():boolean{
+    if(this.SposGenerated){
+      gl.bindBuffer(gl.ARRAY_BUFFER,this.bufSPos);
+    }
+    return this.SposGenerated;
+  }
+
   elemCount(): number {
     return this.count;
   }
 
   drawMode(): GLenum {
     return gl.TRIANGLES;
+  }
+
+  setNumInstances(num: number) {
+    this.instances = num;
   }
 };
 

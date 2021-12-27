@@ -1,8 +1,8 @@
 #version 300 es
 
-uniform mat4 u_Model;
-uniform mat4 u_ModelInvTr; 
-uniform mat4 u_ViewProj;
+uniform mat4 u_Model;       // Transformations of object
+uniform mat4 u_ModelInvTr;  // Inverse transpose of the model matrix
+uniform mat4 u_ViewProj;    // Camera transformation
 
 in vec4 vs_Pos;             // vertex positions
 in vec4 vs_Nor;             // vertex normals
@@ -14,17 +14,15 @@ in vec4 vs_Translation;
 in vec4 vs_Quaternion;
 in vec3 vs_Scale;
 
-out vec4 fs_Nor;   
-out vec4 fs_LightVec; 
-out vec4 fs_Col;         
-out vec4 fs_Pos;   
+out vec4 fs_Nor;            
+out vec4 fs_LightVec;       
+out vec4 fs_Col;           
 
 const vec4 lightPos = vec4(500, 500, -300, 1); // light position
 
 void main()
 {
     fs_Col = vs_Col;
-    fs_Pos = vs_Pos;
 
     mat3 invTranspose = mat3(u_ModelInvTr);
     fs_Nor = vec4(invTranspose * vec3(vs_Nor), 0); // ensure the normals remain perpendicular to the surface
@@ -44,6 +42,5 @@ void main()
     }
 
     fs_LightVec = lightPos - tempPos;  // direction light source
-
     gl_Position = u_ViewProj * tempPos;
 }
