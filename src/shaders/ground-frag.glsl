@@ -14,5 +14,4 @@ void main()
     vec4 col = vec4(vec3(1.f, 1.f, 1.f) * lamb, 1.f);
     float len = length(fs_Pos);
     out_Col = col;
-    //mix(col, vec4(1, 1, 1, 1.f), clamp(0.f, 1.f, len / 1000.f));
 }

@@ -3,13 +3,12 @@ import * as Stats from 'stats-js';
 import * as DAT from 'dat-gui';
 import Square from './geometry/Square';
 import Snow from './geometry/Snow';
-import OpenGLRenderer from './rendering/gl/OpenGLRenderer';
+import OpenGLRenderer from './gl/OpenGLRenderer';
 import Camera from './Camera';
-import ScreenQuad from './geometry/ScreenQuad';
-import BranchLeaf from './geometry/Cylinder';
+import BranchLeaf from './geometry/BranchLeaf';
 import { setGL } from './globals';
-import ShaderProgram, { Shader } from './rendering/gl/ShaderProgram';
-import { LSystem } from './LSystem/LSystem';
+import ShaderProgram, { Shader } from './gl/ShaderProgram';
+import { LSystem, Node } from './LSystem/LSystem';
 import Tree from './lsystem/Tree';
 import Plane from './geometry/Plane';
 
@@ -26,19 +25,8 @@ window.onload = function() {
 }
 
 let axiom: string = "FF_F_F_[X]FFF+X";
-// let axiom: string = "FFFF+FFFF+[X]FFFFF+X";
 let grammar: { [key: string]: string; } = {};
-
-const controls = {
-  tesselations: 5,
-  'Generate': loadScene,
-  'Iterations': 2,
-  'Axiom': axiom,
-  'Grammar': "FF*[-FF-FF+F-FF*X[X[X]]FFF-FF*X][-FFF+F+FF*X[X[X]]]"
-};
-
 let n = 2;
-let screenQuad: ScreenQuad;
 let time: number = 0.0;
 let newLSystem: LSystem;
 let tree: Tree;
@@ -47,51 +35,63 @@ let leaf: BranchLeaf;
 let background: Square;
 let plane: Plane;
 let snow: Snow;
+let snowNum = 5000;
+
+const controls = {
+  tesselations: 5,
+  'Generate': loadScene,
+  'Iterations': 2,
+  'Axiom': axiom,
+  'Grammar': "FF*[-FF-FF+F-FF*X[X[X]]FFF-FF*X][-FFF+F+FF*X[X[X]]]",
+  'Snowflake count': snowNum
+};
+
+function generateSnowflakes(n: number) {
+  let snowflakePositions = [];
+  for (let i = 0; i < n; i++) {
+    let r1 = 800 * (Math.random() - 0.5);
+    let r2 = 600 * Math.random();
+    let r3 = 800 * (Math.random() - 0.5);
+    snowflakePositions.push(r1);
+    snowflakePositions.push(r2);
+    snowflakePositions.push(r3);
+  }  
+  
+  return new Float32Array(snowflakePositions);
+}
 
 function loadScene() {
   background = new Square(vec3.fromValues(0, 0, 0));
   background.create();
   let center = vec4.fromValues(0, 0, 0, 1);
-  
-  screenQuad = new ScreenQuad();
-  screenQuad.create();
 
-  plane = new Plane(vec3.fromValues(0, 0, 0), vec2.fromValues(1000, 1000), 20);
+  plane = new Plane(vec3.fromValues(0, 0, 0), vec2.fromValues(800, 800), 20);
   plane.create();
 
   grammar["X"] = controls.Grammar;
 
+  // Create L-System
   newLSystem = new LSystem(controls.Axiom, grammar);
-  tree = new Tree(newLSystem, meshes, n);
-  tree.createTree();
+  let lSystemNode: Node = newLSystem.createLSystemString(n);
 
+  // Create tree
+  tree = new Tree(newLSystem, meshes, n);
+  tree.createTree(lSystemNode);
+
+  // Generate branches
   branch = new BranchLeaf(center, meshes, "branch", vec4.fromValues(0.3, 0.2, 0.2, 1),
            tree.translationBranch, tree.quaternionsBranch, tree.scalesBranch, tree.instanceCountBranch);
   branch.create();
 
+  // Generate leaves
   leaf = new BranchLeaf(center, meshes, "leaf", vec4.fromValues(0.5, 0.5, 0.3, 1),
          tree.translationsLeaf, tree.quaternionsLeaf, tree.scalesLeaf, tree.instanceCountLeaf);
   leaf.create();
 
-  let snowNum = 5000;
-  let snowPosArray = [];
-  for(let i = 0;i<snowNum;i++){
-    let rnd1 = 450*(Math.random()-0.5);
-    let rnd2 = 300*Math.random();
-    let rnd3 = 450*(Math.random()-0.5);
-    snowPosArray.push(rnd1);
-    snowPosArray.push(rnd2);
-    snowPosArray.push(rnd3);
-  }  
-
-  let snowPos:Float32Array = new Float32Array(snowPosArray);
-  snow = new Snow(.8, snowNum);
+  // Generate snow
+  let snowPositions: Float32Array = generateSnowflakes(snowNum);
+  snow = new Snow(5, snowNum, snowPositions);
   snow.create();
-
-  snow.setInstanceVBOs(snowPos);
-  snow.setNumInstances(snowNum);
-  console.log(snow.positions);
-  
 }
 
 function main() {
@@ -109,10 +109,15 @@ function main() {
     function(iter: number) {
       n = iter;
     }
-  )
+  );
 
   gui.add(controls, 'Axiom');
   gui.add(controls, 'Grammar');
+  gui.add(controls, 'Snowflake count').min(0).max(6000).step(500).onChange(
+    function(num: number) {
+      snowNum = num;
+    }
+  );
   gui.add(controls, 'Generate');
 
   // get canvas and webgl context
@@ -160,24 +165,16 @@ function main() {
     new Shader(gl.FRAGMENT_SHADER, require('./shaders/snow-frag.glsl')),
   ]);
 
-  const flat = new ShaderProgram([
-    new Shader(gl.VERTEX_SHADER, require('./shaders/flat-vert.glsl')),
-    new Shader(gl.FRAGMENT_SHADER, require('./shaders/flat-frag.glsl')),
-  ]);
-
   // This function will be called every frame
   function tick() {
     camera.update();
     stats.begin();
     snowShader.setTime(time++);
-    // flat.setTime(time++);
 
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.clear();
 
-    // renderer.render(camera, flat, [screenQuad]);
-
-    renderer.render(camera, flat, [
+    renderer.render(camera, backgroundShader, [
       background
     ]);
 
@@ -197,7 +194,7 @@ function main() {
     gl.blendFunc(gl.ONE, gl.ONE); // Additive blending
 
     renderer.render(camera, snowShader, [
-      // snow
+      snow
     ]);
 
     gl.disable(gl.BLEND);
@@ -212,13 +209,11 @@ function main() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.setAspectRatio(window.innerWidth / window.innerHeight);
     camera.updateProjectionMatrix();
-    flat.setDimensions(window.innerWidth, window.innerHeight);
   }, false);
 
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.setAspectRatio(window.innerWidth / window.innerHeight);
   camera.updateProjectionMatrix();
-  flat.setDimensions(window.innerWidth, window.innerHeight);
 
   // Start the render loop
   tick();

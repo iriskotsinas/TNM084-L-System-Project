@@ -1,5 +1,5 @@
 import {mat4, vec4} from 'gl-matrix';
-import Drawable from '../rendering/gl/Drawable';
+import Drawable from '../gl/Drawable';
 import {gl} from '../globals';
 
 class BranchLeaf extends Drawable {

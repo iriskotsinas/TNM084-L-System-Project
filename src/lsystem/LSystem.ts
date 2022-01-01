@@ -20,12 +20,12 @@ export class LSystem {
     let result: Node = new Node(this.axiom[0]);
 
     let tempNode = result;
-    for (let i: number = 1; i < this.axiom.length; ++i) {
+    for (let i = 1; i < this.axiom.length; ++i) {
       tempNode.next = new Node(this.axiom[i]);
       tempNode = tempNode.next;
     }
 
-    for (let i: number = 0; i < iterations; ++i) {
+    for (let i = 0; i < iterations; ++i) {
       let newNode: Node;
       let tempNewNode: Node;
       let tempResult = result;
@@ -38,22 +38,22 @@ export class LSystem {
           value = this.grammar[tempResult.value];
         }
 
-        for (let c of value) {
+        for (let x of value) {
           if (newNode == undefined) {
-            newNode = new Node(c);
+            newNode = new Node(x);
             tempNewNode = newNode;
           } else {
-            tempNewNode.next = new Node(c);
+            tempNewNode.next = new Node(x);
             tempNewNode = tempNewNode.next;
           }
         }
 
-        tempResult = tempResult.next; 
+        tempResult = tempResult.next;
       }
 
       result = newNode;
     }
-
+    
     return result;
   }
 };

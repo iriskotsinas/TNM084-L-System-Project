@@ -1,6 +1,6 @@
 import {vec3, vec4, mat4, mat3} from 'gl-matrix';
 import Drawable from './Drawable';
-import {gl} from '../../globals';
+import {gl} from '../globals';
 
 var activeProgram: WebGLProgram = null;
 
@@ -24,7 +24,7 @@ class ShaderProgram {
   attrPos: number;
   attrNor: number;
   attrCol: number;
-  attrSpos : number;
+  attrSnowPos : number;
 
   attrTranslation: number;
   attrQuaternion: number;
@@ -33,7 +33,6 @@ class ShaderProgram {
   unifModel: WebGLUniformLocation;
   unifModelInvTr: WebGLUniformLocation;
   unifViewProj: WebGLUniformLocation;
-  unifInvViewProj: WebGLUniformLocation;
   unifColor: WebGLUniformLocation;
   unifTime: WebGLUniformLocation;
   unifCameraAxes: WebGLUniformLocation;
@@ -58,7 +57,7 @@ class ShaderProgram {
     this.attrPos = gl.getAttribLocation(this.prog, "vs_Pos");
     this.attrNor = gl.getAttribLocation(this.prog, "vs_Nor");
     this.attrCol = gl.getAttribLocation(this.prog, "vs_Col");
-    this.attrSpos = gl.getAttribLocation(this.prog,"vs_Spos");
+    this.attrSnowPos = gl.getAttribLocation(this.prog,"vs_SnowPos");
 
     this.attrTranslation = gl.getAttribLocation(this.prog, "vs_Translation");
     this.attrQuaternion = gl.getAttribLocation(this.prog, "vs_Quaternion");
@@ -67,7 +66,6 @@ class ShaderProgram {
     this.unifModel      = gl.getUniformLocation(this.prog, "u_Model");
     this.unifModelInvTr = gl.getUniformLocation(this.prog, "u_ModelInvTr");
     this.unifViewProj   = gl.getUniformLocation(this.prog, "u_ViewProj");
-    this.unifInvViewProj = gl.getUniformLocation(this.prog, "u_InvViewProj");
     this.unifColor      = gl.getUniformLocation(this.prog, "u_Color");
     this.unifTime      = gl.getUniformLocation(this.prog, "u_Time");
     this.unifCameraAxes      = gl.getUniformLocation(this.prog, "u_CameraAxes");
@@ -159,13 +157,6 @@ class ShaderProgram {
     }
   }
 
-  setInvViewProjMatrix(ivp: mat4) {
-    this.use();
-    if (this.unifInvViewProj !== -1) {
-      gl.uniformMatrix4fv(this.unifInvViewProj, false, ivp);
-    }
-  }
-
   draw(d: Drawable) {
     this.use();
 
@@ -207,10 +198,10 @@ class ShaderProgram {
         gl.vertexAttribDivisor(this.attrScale, 1);
       }
 
-      if (this.attrSpos != -1 && d.bindSpos()) {
-        gl.enableVertexAttribArray(this.attrSpos);
-        gl.vertexAttribPointer(this.attrSpos,3,gl.FLOAT,false,0,0);
-        gl.vertexAttribDivisor(this.attrSpos,1);
+      if (this.attrSnowPos != -1 && d.bindSnowPos()) {
+        gl.enableVertexAttribArray(this.attrSnowPos);
+        gl.vertexAttribPointer(this.attrSnowPos, 3, gl.FLOAT, false, 0, 0);
+        gl.vertexAttribDivisor(this.attrSnowPos, 1);
       }
 
       d.bindIdx();
@@ -223,7 +214,7 @@ class ShaderProgram {
     if (this.attrPos != -1) gl.disableVertexAttribArray(this.attrPos);
     if (this.attrNor != -1) gl.disableVertexAttribArray(this.attrNor);
     if (this.attrCol != -1) gl.disableVertexAttribArray(this.attrCol);
-    if (this.attrSpos!= -1) gl.disableVertexAttribArray(this.attrSpos);
+    if (this.attrSnowPos!= -1) gl.disableVertexAttribArray(this.attrSnowPos);
 
     if (this.attrTranslation != -1) gl.disableVertexAttribArray(this.attrTranslation);
     if (this.attrQuaternion != -1) gl.disableVertexAttribArray(this.attrQuaternion);

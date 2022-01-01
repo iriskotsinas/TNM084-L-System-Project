@@ -1,4 +1,4 @@
-import {gl} from '../../globals';
+import {gl} from '../globals';
 
 abstract class Drawable {
   count: number = 0;
@@ -11,7 +11,7 @@ abstract class Drawable {
   bufTranslations: WebGLBuffer;
   bufQuaternions: WebGLBuffer;
   bufScales: WebGLBuffer;
-  bufSPos:WebGLBuffer;
+  bufSnowPos: WebGLBuffer;
 
   idxBound: boolean = false;
   posBound: boolean = false;
@@ -21,7 +21,7 @@ abstract class Drawable {
   translationsBound: boolean = false;
   quaternionsBound: boolean = false;
   scalesBound: boolean = false;
-  SposGenerated:boolean = false;
+  SnowPositionGenerated: boolean = false;
 
   isInstanced: boolean = false;
   instances: number = 0;
@@ -36,7 +36,7 @@ abstract class Drawable {
     gl.deleteBuffer(this.bufTranslations);
     gl.deleteBuffer(this.bufQuaternions);
     gl.deleteBuffer(this.bufScales);
-    gl.deleteBuffer(this.bufSPos);
+    gl.deleteBuffer(this.bufSnowPos);
   }
 
   generateIdx() {
@@ -74,9 +74,9 @@ abstract class Drawable {
     this.bufTranslations = gl.createBuffer();
   }
 
-  generateSpos(){
-    this.SposGenerated = true;
-    this.bufSPos = gl.createBuffer();
+  generateSnowPos(){
+    this.SnowPositionGenerated = true;
+    this.bufSnowPos = gl.createBuffer();
   }
 
   bindIdx(): boolean {
@@ -131,11 +131,11 @@ abstract class Drawable {
     return this.scalesBound;
   }
 
-  bindSpos():boolean{
-    if(this.SposGenerated){
-      gl.bindBuffer(gl.ARRAY_BUFFER,this.bufSPos);
+  bindSnowPos(): boolean {
+    if (this.SnowPositionGenerated){
+      gl.bindBuffer(gl.ARRAY_BUFFER,this.bufSnowPos);
     }
-    return this.SposGenerated;
+    return this.SnowPositionGenerated;
   }
 
   elemCount(): number {
@@ -144,10 +144,6 @@ abstract class Drawable {
 
   drawMode(): GLenum {
     return gl.TRIANGLES;
-  }
-
-  setNumInstances(num: number) {
-    this.instances = num;
   }
 };
 

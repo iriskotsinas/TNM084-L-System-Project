@@ -1,5 +1,5 @@
 import {vec2, vec3, vec4} from 'gl-matrix';
-import Drawable from '../rendering/gl/Drawable';
+import Drawable from '../gl/Drawable';
 import {gl} from '../globals';
 
 class Plane extends Drawable {
@@ -14,7 +14,7 @@ class Plane extends Drawable {
         super();
         this.center = vec3.fromValues(center[0], center[1], center[2]);
         this.scale = scale;
-        this.subdivisions = subdivs + subdivs % 2; // Ensures the number is even
+        this.subdivisions = subdivs + subdivs % 2;
     }
 
     create() {
@@ -22,12 +22,12 @@ class Plane extends Drawable {
         let normalize: number = 1.0 / width;
         this.positions = new Float32Array((width + 1) * (width + 1) * 4);
         this.normals = new Float32Array((width + 1) * (width + 1) * 4);
-        this.indices = new Uint32Array(width * width * 6); // NxN squares, each square is two triangles, each triangle is three indices
+        this.indices = new Uint32Array(width * width * 6); // each square is two triangles, each triangle is three indices
 
         let posIdx = 0;
         for(let x = 0; x <= width; ++x) {
             for(let z = 0; z <= width; ++z) {
-                // Make a strip of vertices along Z with the current X coord
+                // Make vertices along Z with the current X coord
                 this.normals[posIdx] = 0;
                 this.positions[posIdx++] = x * normalize * this.scale[0] + this.center[0] - this.scale[0] * 0.5;
                 this.normals[posIdx] = 1;
@@ -40,9 +40,9 @@ class Plane extends Drawable {
         }
 
         let indexIdx = 0;
-        // Make the squares out of indices
-        for(let i = 0; i < width; ++i) { // X iter
-            for(let j = 0; j < width; ++j) { // Z iter
+        // squares out of indices
+        for(let i = 0; i < width; ++i) {
+            for(let j = 0; j < width; ++j) {
                 this.indices[indexIdx++] = j + i * (width + 1);
                 this.indices[indexIdx++] = j + 1 + i * (width + 1);
                 this.indices[indexIdx++] = j + (i + 1) * (width + 1);

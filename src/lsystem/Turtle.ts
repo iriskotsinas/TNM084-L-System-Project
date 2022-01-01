@@ -53,7 +53,7 @@ class Turtle {
     let randomChance = Math.random(); // random number between 0 and 1
 
     if (randomChance < 0.5){
-        rotAxis = vec3.fromValues(0.0, 1.0, 0.0);  
+      rotAxis = vec3.fromValues(0.0, 1.0, 0.0);  
     }
 
     vec3.normalize(rotAxis, rotAxis);

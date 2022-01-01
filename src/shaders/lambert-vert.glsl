@@ -29,21 +29,20 @@ void main()
     mat3 invTranspose = mat3(u_ModelInvTr);
     fs_Nor = vec4(invTranspose * vec3(vs_Nor), 0); // ensure the normals remain perpendicular to the surface
 
-    vec4 tempPos = u_Model * vs_Pos; 
+    vec4 tempPosition = u_Model * vs_Pos; 
 
     if (u_IsInstance == 1.f) {
-      tempPos = vec4(tempPos[0] * vs_Scale[0], tempPos[1] * vs_Scale[1], tempPos[2] * vs_Scale[2], 1.f);
+      tempPosition = vec4(tempPosition[0] * vs_Scale[0], tempPosition[1] * vs_Scale[1], tempPosition[2] * vs_Scale[2], 1.f);
 
-      vec3 v = vec3(tempPos);
+      vec3 v = vec3(tempPosition);
       vec3 u = vec3(vs_Quaternion);
       float s = vs_Quaternion[3];
-      vec3 newPos = 2.0f * dot(u, v) * u + (s * s - dot(u, u)) * v + 2.0f * s * cross(u, v);
+      vec3 newPosition = 2.0f * dot(u, v) * u + (s * s - dot(u, u)) * v + 2.0f * s * cross(u, v);
 
-      newPos += vec3(vs_Translation);
-      tempPos = vec4(newPos, 1.f);
+      newPosition += vec3(vs_Translation);
+      tempPosition = vec4(newPosition, 1.f);
     }
 
-    fs_LightVec = lightPos - tempPos;  // direction light source
-
-    gl_Position = u_ViewProj * tempPos;
+    fs_LightVec = lightPos - tempPosition;  // direction light source
+    gl_Position = u_ViewProj * tempPosition;
 }
