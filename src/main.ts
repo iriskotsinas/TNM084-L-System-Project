@@ -24,7 +24,7 @@ window.onload = function() {
   });
 }
 
-let axiom: string = "FF_F_F_[X]FFF+X";
+let axiom: string = "FF~F~F~[X]FFF+X";
 let grammar: { [key: string]: string; } = {};
 let n = 2;
 let time: number = 0.0;

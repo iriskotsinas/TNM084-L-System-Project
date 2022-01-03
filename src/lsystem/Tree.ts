@@ -64,10 +64,6 @@ class Tree {
           continue;
         }
 
-        // if (turtle.movingScale[1] < 0 && turtle.level < 8) {
-        //   turtle.reverseAimY();
-        // }
-
         this.translationBranch.push(turtle.position[0], turtle.position[1], turtle.position[2], 0);
         this.quaternionsBranch.push(turtle.quaternion[0], turtle.quaternion[1], turtle.quaternion[2], turtle.quaternion[3]);
         this.scalesBranch.push(turtle.movingScale[0], turtle.movingScale[1], turtle.movingScale[2], 1);
@@ -80,7 +76,7 @@ class Tree {
       } else if (cur === "+") {
         turtle.rotate(30);
 
-      } else if (cur === "_") {
+      } else if (cur === "~") {
         turtle.rotate(10);
 
       } else if (cur === "[") {

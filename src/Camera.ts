@@ -58,9 +58,6 @@ class Camera {
     vec3.normalize(this.right, this.right);
     vec3.cross(this.up, this.right, this.forward);
     vec3.normalize(this.up, this.up);
-    // this.controls.tick();
-    // vec3.add(this.target, this.position, this.direction);
-    // mat4.lookAt(this.viewMatrix, this.controls.eye, this.controls.center, this.controls.up);
   }
 };
 

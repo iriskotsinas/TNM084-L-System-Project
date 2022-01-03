@@ -40,7 +40,6 @@ class OpenGLRenderer {
     prog.setViewProjMatrix(viewProj);
     prog.setGeometryColor(color);
 
-    // prog.setEyeRefUp(camera.controls.eye, camera.controls.center, camera.controls.up);
     prog.setCameraAxes(axes);
 
     for (let drawable of drawables) {
