@@ -17,6 +17,7 @@ void main()
     fs_Pos = vs_Pos;
     vec3 pos = vs_SnowPos.xyz;
 
+    // Movement of the snowflake
     pos.y -= u_Time / 50.f;
     pos.y = mod(pos.y, 150.f);
 

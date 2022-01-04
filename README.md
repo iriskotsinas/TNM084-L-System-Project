@@ -7,7 +7,7 @@
 ## Technical specifications
 
 ### Tree
-A tree was created with the use of an L-system. An L-system class was created in order to read and generate the grammar string. The program was given an axiom and a grammar in order to generate branches and leaves. A turtle class was created in order to perform the rules given. The rules were as follows below:
+A tree was created with the use of an L-system. An L-system class was created in order to read and generate the grammar string. The program was given an axiom and a grammar in order to generate branches and leaves. A turtle class was created in order to perform the rules given. The rules are as follows below:
 
          F -> Move forward and draw geometry
          [ -> Branch start (push state)
