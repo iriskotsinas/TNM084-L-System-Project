@@ -47,6 +47,8 @@ class Tree {
   }
 
   createTree(lSystemNode: Node) {
+    let zAxis = vec3.fromValues(0.0, 0.0, 1.0);
+    let yAxis = vec3.fromValues(0.0, 1.0, 0.0);
     let turtles: Array<Turtle> = [];
     let startHeight = this.findStartHeight();
     let turtle: Turtle = new Turtle(vec3.fromValues(0, 0, 0), vec3.fromValues(0, 1, 0), vec3.fromValues(4, 2, 4),
@@ -71,13 +73,16 @@ class Tree {
         turtle.moveForward();
 
       } else if (cur === "-") {
-        turtle.rotate(-30);
+        turtle.rotate(-30, zAxis);
 
       } else if (cur === "+") {
-        turtle.rotate(30);
+        turtle.rotate(30, zAxis);
 
       } else if (cur === "~") {
-        turtle.rotate(10);
+        turtle.rotate(10, zAxis);
+
+      } else if (cur === "/") {
+        turtle.rotate(90, yAxis);
 
       } else if (cur === "[") {
         let newTurtle: Turtle = turtle.copy();

@@ -6058,7 +6058,7 @@ window.onload = function () {
         main();
     });
 };
-let axiom = "FF~F~F~[X]FFF+X";
+let axiom = "FFF~F~F~[X]FFF+X";
 let grammar = {};
 let n = 4;
 let time = 0.0;
@@ -6071,11 +6071,10 @@ let plane;
 let snow;
 let snowNum = 5000;
 const controls = {
-    tesselations: 5,
     'Generate': loadScene,
     'Iterations': 4,
     'Axiom': axiom,
-    'Grammar': "FF*[-FF-FF+F-FF*X[X[X]]FFF-FF*X][-FFF+F+FF*X[X[X]]]",
+    'Grammar': "FF*[-FF-/FF+F-F*X[X[X]]FFF-FF*X][-FFF+F+FF*X[X[X]]]",
     'Snowflake count': snowNum
 };
 function generateSnowflakes(n) {
@@ -16852,6 +16851,8 @@ class Tree {
         return maxY - minY;
     }
     createTree(lSystemNode) {
+        let zAxis = __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["e" /* vec3 */].fromValues(0.0, 0.0, 1.0);
+        let yAxis = __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["e" /* vec3 */].fromValues(0.0, 1.0, 0.0);
         let turtles = [];
         let startHeight = this.findStartHeight();
         let turtle = new __WEBPACK_IMPORTED_MODULE_1__Turtle__["a" /* default */](__WEBPACK_IMPORTED_MODULE_0_gl_matrix__["e" /* vec3 */].fromValues(0, 0, 0), __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["e" /* vec3 */].fromValues(0, 1, 0), __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["e" /* vec3 */].fromValues(4, 2, 4), startHeight, __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["e" /* vec3 */].fromValues(0, 1, 0), __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["c" /* quat */].fromValues(0, 0, 0, 1), 0);
@@ -16872,13 +16873,16 @@ class Tree {
                 turtle.moveForward();
             }
             else if (cur === "-") {
-                turtle.rotate(-30);
+                turtle.rotate(-30, zAxis);
             }
             else if (cur === "+") {
-                turtle.rotate(30);
+                turtle.rotate(30, zAxis);
             }
             else if (cur === "~") {
-                turtle.rotate(10);
+                turtle.rotate(10, zAxis);
+            }
+            else if (cur === "/") {
+                turtle.rotate(90, yAxis);
             }
             else if (cur === "[") {
                 let newTurtle = turtle.copy();
@@ -16948,10 +16952,9 @@ class Turtle {
         return result;
     }
     // + and - rotation
-    rotate(angle) {
+    rotate(angle, rotAxis) {
         // quat - axis and angle to rotate
         let q = __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["c" /* quat */].create();
-        let rotAxis = __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["e" /* vec3 */].fromValues(0.0, 0.0, 1.0);
         let rad = this.toRadians(angle);
         let randomChance = Math.random(); // random number between 0 and 1
         if (randomChance < 0.5) {

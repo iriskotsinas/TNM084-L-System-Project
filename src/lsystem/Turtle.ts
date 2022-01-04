@@ -45,14 +45,13 @@ class Turtle {
   }
 
   // + and - rotation
-  rotate(angle: number) {
+  rotate(angle: number, rotAxis: vec3) {
     // quat - axis and angle to rotate
     let q: quat = quat.create();
-    let rotAxis = vec3.fromValues(0.0, 0.0, 1.0);
     let rad = this.toRadians(angle);
     let randomChance = Math.random(); // random number between 0 and 1
 
-    if (randomChance < 0.5){
+    if (randomChance < 0.5) {
       rotAxis = vec3.fromValues(0.0, 1.0, 0.0);  
     }
 
