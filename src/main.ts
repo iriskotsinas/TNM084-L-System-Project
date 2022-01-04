@@ -26,7 +26,7 @@ window.onload = function() {
 
 let axiom: string = "FF~F~F~[X]FFF+X";
 let grammar: { [key: string]: string; } = {};
-let n = 2;
+let n = 4;
 let time: number = 0.0;
 let newLSystem: LSystem;
 let tree: Tree;
@@ -40,7 +40,7 @@ let snowNum = 5000;
 const controls = {
   tesselations: 5,
   'Generate': loadScene,
-  'Iterations': 2,
+  'Iterations': 4,
   'Axiom': axiom,
   'Grammar': "FF*[-FF-FF+F-FF*X[X[X]]FFF-FF*X][-FFF+F+FF*X[X[X]]]",
   'Snowflake count': snowNum
