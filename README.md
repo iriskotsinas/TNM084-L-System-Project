@@ -1,6 +1,8 @@
 # TNM084 Procedural generation of a tree with Lindenmayer Systems
 
-## Demo link
+[Demo link](https://iriskotsinas.github.io/TNM084-L-System-Project/)
+
+![image](images/tree2.png) ![image](images/tree3.png)
 
 ***
 
