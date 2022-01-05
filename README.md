@@ -1,4 +1,4 @@
-# TNM084 Procedural generation of a tree with Lindenmayer Systems
+# TNM084 Procedural generation with Lindenmayer Systems
 
 [Demo link](https://iriskotsinas.github.io/TNM084-L-System-Project/)
 
@@ -43,3 +43,11 @@ The user can also change the iteration count. As the iteration count increases t
 The user can change the snowflake count as well.
 
 When the "generate"-button is clicked, a new tree is generated with the changes of the input as well as with new random values such as the angles.
+
+***
+## Run the application
+To run the application locally, enter the following commands:
+
+`npm install`
+
+`npm start`
