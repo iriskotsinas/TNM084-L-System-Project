@@ -2,7 +2,7 @@
 
 [Demo link](https://iriskotsinas.github.io/TNM084-L-System-Project/)
 
-![image](images/tree2.png) ![image](images/tree3.png)
+<img src="images/tree2.png" width="300" /> <img src="images/tree3.png" width="300" />
 
 ***
 
