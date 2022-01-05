@@ -19,7 +19,7 @@ A tree was created with the use of an L-system. An L-system class was created in
          - -> Rotate turtle (up to 30 degrees left)
          * -> Draw leaf
 
-Instancing was used to increase the performance of the application, and was done by calling *gl.drawElementsInstanced* instead of *gl.drawElements*, with an extra parameter indicating how many instances there should be. This was used for both the leaves and the branches.
+Instancing was used to increase the performance of the application, and was done by calling `gl.drawElementsInstanced` instead of `gl.drawElements`, with an extra parameter indicating how many instances there should be. This was used for both the leaves and the branches.
 
 The axiom and grammar used initally in the application is below:
 
@@ -31,7 +31,7 @@ The axiom and grammar used initally in the application is below:
 A terrain was generated for the scene by creating a plane and then applying noise to it in the vertex shader to add displacement. Fractal Brownian Motion was applied to the plane, which added interesting shapes to it. The plane was made to resemble a ground covered in snow, and was therefore given a white color with some lambertian shading in the fragment shader.
 
 ### Snowflakes
-In order to successfully generate snowflakes, instancing was used. This was done similarly to the use of instancing for the branches and leaves, by calling  *gl.drawElementsInstanced*. A simple square was created, which then was modified in the fragment shader to resemble a snowflake. The snowflakes were created as billboards, where each corner of the billboard is at the center position, displaced by the camera’s up and right vectors.
+In order to successfully generate snowflakes, instancing was used. This was done similarly to the use of instancing for the branches and leaves, by calling  `gl.drawElementsInstanced`. A simple square was created, which then was modified in the fragment shader to resemble a snowflake. The snowflakes were created as billboards, where each corner of the billboard is at the center position, displaced by the camera’s up and right vectors.
 
 ***
 
