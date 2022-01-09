@@ -16969,11 +16969,6 @@ class Turtle {
         // rotationTo: Sets a quaternion to represent the shortest rotation from one vector to another
         __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["c" /* quat */].rotationTo(this.quaternion, __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["e" /* vec3 */].fromValues(0, 1, 0), this.heading);
     }
-    reverseAimY() {
-        this.heading[1] = -this.heading[1];
-        __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["c" /* quat */].rotationTo(this.quaternion, this.up, this.heading);
-        __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["c" /* quat */].normalize(this.quaternion, this.quaternion);
-    }
     copy() {
         let newPosition = __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["e" /* vec3 */].create();
         __WEBPACK_IMPORTED_MODULE_0_gl_matrix__["e" /* vec3 */].copy(newPosition, this.position);

@@ -17,6 +17,7 @@ A tree was created with the use of an L-system. An L-system class was created in
          ~ -> Rotate turtle (up to 10 degrees right)
          + -> Rotate turtle (up to 30 degrees right)
          - -> Rotate turtle (up to 30 degrees left)
+         / -> Rotate turtle (up to 90 degrees right)
          * -> Draw leaf
 
 Instancing was used to increase the performance of the application, and was done by calling `gl.drawElementsInstanced` instead of `gl.drawElements`, with an extra parameter indicating how many instances there should be. This was used for both the leaves and the branches.
