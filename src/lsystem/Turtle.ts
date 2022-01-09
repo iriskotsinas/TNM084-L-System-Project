@@ -68,12 +68,6 @@ class Turtle {
     quat.rotationTo(this.quaternion, vec3.fromValues(0, 1, 0), this.heading);    
   }
 
-  reverseAimY() {
-    this.heading[1] = -this.heading[1];
-    quat.rotationTo(this.quaternion, this.up, this.heading);
-    quat.normalize(this.quaternion, this.quaternion);
-  }
-
   copy() {
     let newPosition: vec3 = vec3.create();
     vec3.copy(newPosition, this.position);

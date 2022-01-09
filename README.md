@@ -23,9 +23,9 @@ Instancing was used to increase the performance of the application, and was done
 
 The axiom and grammar used initally in the application is below:
 
-**Axiom**: FF~F~F~[X]FFF+X
+**Axiom**: FFF~F~F~[X]FFF+X
 
-**Grammar**: X = FF*[-FF-FF+F-FF\*X[X[X]]FFF-FF\*X][-FFF+F+FF\*X[X[X]]]
+**Grammar**: X = FF*[-FF-/FF+F-F\*X[X[X]]FFF-FF\*X][-FFF+F+FF\*X[X[X]]]
 
 ### Terrain
 A terrain was generated for the scene by creating a plane and then applying noise to it in the vertex shader to add displacement. Fractal Brownian Motion was applied to the plane, which added interesting shapes to it. The plane was made to resemble a ground covered in snow, and was therefore given a white color with some lambertian shading in the fragment shader.
