@@ -1,8 +1,8 @@
 import {mat4, vec4} from 'gl-matrix';
-import Drawable from '../gl/Drawable';
+import Draw from '../gl/Draw';
 import {gl} from '../globals';
 
-class BranchLeaf extends Drawable {
+class BranchLeaf extends Draw {
     indices: Uint32Array;
     positions: Float32Array;
     normals: Float32Array;

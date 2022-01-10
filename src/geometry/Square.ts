@@ -1,8 +1,8 @@
 import {vec3, vec4} from 'gl-matrix';
-import Drawable from '../gl/Drawable';
+import Draw from '../gl/Draw';
 import {gl} from '../globals';
 
-class Square extends Drawable {
+class Square extends Draw {
   indices: Uint32Array;
   positions: Float32Array;
   normals: Float32Array;

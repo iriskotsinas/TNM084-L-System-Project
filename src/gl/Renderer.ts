@@ -1,5 +1,5 @@
 import {mat4, vec4, mat3} from 'gl-matrix';
-import Drawable from './Drawable';
+import Draw from './Draw';
 import Camera from '../Camera';
 import {gl} from '../globals';
 import ShaderProgram from './ShaderProgram';
@@ -21,7 +21,7 @@ class OpenGLRenderer {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   }
 
-  render(camera: Camera, prog: ShaderProgram, drawables: Array<Drawable>) {
+  render(camera: Camera, prog: ShaderProgram, drawables: Array<Draw>) {
     let model = mat4.create();
     let viewProj = mat4.create();
     // let color = vec4.fromValues(1, 1, 0, 1);

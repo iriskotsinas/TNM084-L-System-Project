@@ -1,5 +1,5 @@
 import {vec3, vec4, mat4, mat3} from 'gl-matrix';
-import Drawable from './Drawable';
+import Draw from './Draw';
 import {gl} from '../globals';
 
 var activeProgram: WebGLProgram = null;
@@ -157,7 +157,7 @@ class ShaderProgram {
     }
   }
 
-  draw(d: Drawable) {
+  draw(d: Draw) {
     this.use();
 
     if (this.attrPos != -1 && d.bindPos()) {

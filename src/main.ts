@@ -3,7 +3,7 @@ import * as Stats from 'stats-js';
 import * as DAT from 'dat-gui';
 import Square from './geometry/Square';
 import Snow from './geometry/Snow';
-import OpenGLRenderer from './gl/OpenGLRenderer';
+import Renderer from './gl/Renderer';
 import Camera from './Camera';
 import BranchLeaf from './geometry/BranchLeaf';
 import { setGL } from './globals';
@@ -135,12 +135,12 @@ function main() {
   vec3.rotateY(cameraPos, cameraPos, vec3.fromValues(0,0,0), 290 * Math.PI / 180.0);
   const camera = new Camera(cameraPos, vec3.fromValues(0, 35, 0));
 
-  const renderer = new OpenGLRenderer(canvas);
+  const renderer = new Renderer(canvas);
   gl.enable(gl.DEPTH_TEST);
 
   const lambert = new ShaderProgram([
-    new Shader(gl.VERTEX_SHADER, require('./shaders/lambert-vert.glsl')),
-    new Shader(gl.FRAGMENT_SHADER, require('./shaders/lambert-frag.glsl')),
+    new Shader(gl.VERTEX_SHADER, require('./shaders/tree-vert.glsl')),
+    new Shader(gl.FRAGMENT_SHADER, require('./shaders/tree-frag.glsl')),
   ]);
 
   const leafShader = new ShaderProgram([

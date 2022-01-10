@@ -35,6 +35,8 @@ void main()
       vec3 v = vec3(tempPos);
       vec3 u = vec3(vs_Quaternion);
       float s = vs_Quaternion[3];
+
+      // from https://gamedev.stackexchange.com/questions/28395/rotating-vector3-by-a-quaternion
       vec3 newPos = 2.0f * dot(u, v) * u + (s * s - dot(u, u)) * v + 2.0f * s * cross(u, v);
 
       newPos += vec3(vs_Translation);

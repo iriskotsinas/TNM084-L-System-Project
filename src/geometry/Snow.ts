@@ -1,7 +1,7 @@
-import Drawable from '../gl/Drawable';
+import Draw from '../gl/Draw';
 import {gl} from '../globals';
 
-class Snow extends Drawable {
+class Snow extends Draw {
   indices: Uint32Array;
   positions: Float32Array;
   snowPos: Float32Array;
