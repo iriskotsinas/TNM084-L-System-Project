@@ -1,6 +1,6 @@
 import {gl} from '../globals';
 
-abstract class Drawable {
+abstract class Draw {
   count: number = 0;
 
   bufIdx: WebGLBuffer;
@@ -147,4 +147,4 @@ abstract class Drawable {
   }
 };
 
-export default Drawable;
+export default Draw;

@@ -4,7 +4,7 @@ import Camera from '../Camera';
 import {gl} from '../globals';
 import ShaderProgram from './ShaderProgram';
 
-class OpenGLRenderer {
+class Renderer {
   constructor(public canvas: HTMLCanvasElement) {
   }
 
@@ -53,4 +53,4 @@ class OpenGLRenderer {
   }
 };
 
-export default OpenGLRenderer;
+export default Renderer;
