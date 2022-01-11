@@ -52,3 +52,7 @@ To run the application locally, enter the following commands:
 `npm install`
 
 `npm start`
+
+***
+
+The base code of this project is heavily inspired by https://github.com/CIS-566-2019/hw0-intro-to-javascript-and-webgl-zixin96
